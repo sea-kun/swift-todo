@@ -8,13 +8,35 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+struct Todo {
+    let id:Int
+    let title:String
+    let body:String
+}
+
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+    @IBOutlet weak var todoList: UITableView!
+
+    let todos = [
+        Todo(id: 6, title: "タイトル１", body: "内容１"),
+        Todo(id: 7, title: "タイトル２", body: "内容２"),
+        Todo(id: 8, title: "タイトル３", body: "内容３"),
+    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        todoList.register(UINib(nibName: "TodoTableViewCell", bundle: nil), forCellReuseIdentifier: "TodoTableViewCell")
     }
 
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return todos.count
+    }
 
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TodoTableViewCell", for: indexPath) as! TodoTableViewCell
+        cell.setCell(todo: todos[indexPath.row])
+        return cell
+    }
 }
 
